@@ -15,3 +15,16 @@
   align-items: center;
 }
 
+ul {
+  margin-top: 20px;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+ul li {
+  background-color: blueviolet;
+  padding: 10px;
+  border-radius: 5px;
+}
+

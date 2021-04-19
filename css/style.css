@@ -29,7 +29,7 @@ ul li {
   border-radius: 5px;
 }
 
-li img {
+.language-badge {
   width: 30px;
   height: auto;
 }

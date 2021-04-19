@@ -28,23 +28,32 @@
             <h1 v-if="movieArray.length > 0"> Film: </h1>
             <ul>
                 <li v-for="movie in movieArray">
+                    <img :src="imgInput + movie.poster_path" alt="">
                     <h2>{{movie.title}}</h2>
                     <h3>{{movie.original_title}}</h3>
-                    <img v-if="movie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
-                    <img v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
+                    <img class="language-badge" v-if="movie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                    <img class="language-badge" v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
                     <h4 v-else> {{movie.original_language}} </h4>
-                    <h5>{{movie.vote_average}}</h5>
+                    <h5 v-html = "vote1To5(movie.vote_average)"></h5>
+                    <div>
+                        <i v-for ="(star, starIndex) in 5" :class=" vote1To5(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                    </div>
+                    
                 </li>
             </ul>
             <h1 v-if="tvSeriesArray.length > 0"> Serie-tv: </h1>
             <ul>
                 <li v-for="serie in tvSeriesArray">
+                    <img :src="imgInput + serie.poster_path" alt="">
                     <h2>{{serie.name}}</h2>
                     <h3>{{serie.original_name}}</h3>
-                    <img v-if="serie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
-                    <img v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
+                    <img class="language-badge" v-if="serie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                    <img class="language-badge" v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
                     <h4 v-else> {{serie.original_language}} </h4>
-                    <h5>{{serie.vote_average}}</h5>
+                    <h5 v-html = "vote1To5(serie.vote_average)"></h5>
+                    <div>
+                        <i v-for ="(star, starIndex) in 5" :class=" vote1To5(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                    </div>
                 </li>
             </ul>
         </div>

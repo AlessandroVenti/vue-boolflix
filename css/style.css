@@ -29,3 +29,8 @@ ul li {
   border-radius: 5px;
 }
 
+li img {
+  width: 30px;
+  height: auto;
+}
+

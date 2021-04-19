@@ -23,18 +23,30 @@
 
             <div>
                 <input v-model="searchInput" type="text" placeholder="Ricerca film">
-                <button @click = "searchMovie" > Cerca</button>
+                <button @click = "searchMovie(), searchTvSeries()" > Cerca</button>
             </div>
-
+            <h1 v-if="movieArray.length > 0"> Film: </h1>
             <ul>
-                <li v-for="element in movieArray">
-                    <h2>{{element.title}}</h2>
-                    <h3>{{element.original_title}}</h3>
-                    <h4>{{element.original_language}}</h4>
-                    <h5>{{element.vote_average}}</h5>
+                <li v-for="movie in movieArray">
+                    <h2>{{movie.title}}</h2>
+                    <h3>{{movie.original_title}}</h3>
+                    <img v-if="movie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                    <img v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
+                    <h4 v-else> {{movie.original_language}} </h4>
+                    <h5>{{movie.vote_average}}</h5>
                 </li>
             </ul>
-            
+            <h1 v-if="tvSeriesArray.length > 0"> Serie-tv: </h1>
+            <ul>
+                <li v-for="serie in tvSeriesArray">
+                    <h2>{{serie.name}}</h2>
+                    <h3>{{serie.original_name}}</h3>
+                    <img v-if="serie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                    <img v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
+                    <h4 v-else> {{serie.original_language}} </h4>
+                    <h5>{{serie.vote_average}}</h5>
+                </li>
+            </ul>
         </div>
     </body>
 </html>

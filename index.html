@@ -20,17 +20,21 @@
     </head>
     <body> 
         <div id="jsBoolflix">
-            <input v-model="searchInput" type="text" placeholder="Ricerca film">
-            <button @click = "searchMovie" > Cerca</button>
-        </div>
 
-        <ul>
-            <li v-for="element in movieArray">
-                <h2>{{element.title}}</h2>
-                <h3>{{element.original_title}}</h3>
-                <h4>{{element.original_language}}</h4>
-                <h5>{{element.vote_average}}</h5>
-            </li>
-        </ul>
+            <div>
+                <input v-model="searchInput" type="text" placeholder="Ricerca film">
+                <button @click = "searchMovie" > Cerca</button>
+            </div>
+
+            <ul>
+                <li v-for="element in movieArray">
+                    <h2>{{element.title}}</h2>
+                    <h3>{{element.original_title}}</h3>
+                    <h4>{{element.original_language}}</h4>
+                    <h5>{{element.vote_average}}</h5>
+                </li>
+            </ul>
+            
+        </div>
     </body>
 </html>

@@ -30,14 +30,15 @@ header h1 {
 }
 
 header input {
+  font-family: 'Oxygen', sans-serif;
   background-color: #141414;
-  border: 1px solid white;
+  border: 1px solid cornsilk;
   width: 250px;
   height: 30px;
   margin: 0 20px;
   padding: 0 20px;
-  color: white;
-  font-size: 20px;
+  color: cornsilk;
+  font-size: 15px;
 }
 
 ::-webkit-input-placeholder {
@@ -61,8 +62,9 @@ main {
 
 main h1 {
   margin: 30px 10px;
+  font-family: 'Oxygen', sans-serif;
   font-size: 50px;
-  color: red;
+  color:cornsilk;
 }
 
 section > ul {
@@ -98,10 +100,11 @@ ul li img {
   top: 0;
   left: 0;
   background-color: black;
-  color: white;
+  color: cornsilk;
 }
 
 .description-menu span{
+  font-family: 'Oxygen', sans-serif;
   color: red;
   font-size: 18px;
 }
@@ -110,24 +113,28 @@ li:hover .description-menu {
   display: block;
 }
 
+h2, h3, h4, h5, span {
+  font-family: 'Oxygen', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: cornsilk;
+  margin: 10px 0;
+}
+
+.language-badge {
+  width: 30px;
+  height: auto;
+}
+
 .actorsBox{
   margin-top: 10px;
   list-style-type: none;
 }
 
 .actorsBox li {
-  font-family: 'Roboto', sans-serif;
   padding: 3px;
   border-bottom: 1px solid red;
   width: 50%;
-}
-
-h2, h3, h4, h5, span {
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  font-weight: bold;
-  color: white;
-  margin: 10px 0;
 }
 
 .description-menu img {
@@ -136,12 +143,7 @@ h2, h3, h4, h5, span {
 }
 
 .description-menu i {
-  color:darkkhaki;
-}
-
-.language-badge {
-  width: 30px;
-  height: auto;
+  color:gold;
 }
 
 

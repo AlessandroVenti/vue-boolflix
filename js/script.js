@@ -32,20 +32,49 @@ function createVueInstance() {
       el: '#jsBoolflix',
 
       data: {
-          movieArray : [],
+          moviesArray : [],
           tvSeriesArray : [],
-          actorsArray : [], 
+          popularMoviesArray : [],
+          popularTvSeriesArray: [],
+          moviesActors: { movieId: 0, moviesActorsArray: [] },
+          seriesActors: { serieId: 0, seriesActorsArray: [] },
           searchInput : ``,
-          actors: {
-            movieId: 0,
-            actorsArray: []
-          },
           imgInput: `https://image.tmdb.org/t/p/w342`
+      },
+
+      created() {
+
+        axios.get('https://api.themoviedb.org/3/movie/popular', {
+          params: {
+            'api_key' : 'ae4586143be06066dd74693192e929fc',
+            'page' : 1
+          }
+        })
+        .then(data => {
+            this.popularMoviesArray = data.data.results;
+            console.log(this.popularMoviesArray);
+        })
+        .catch(() => console.log('error'));
+
+
+        axios.get('https://api.themoviedb.org/3/tv/popular', {
+          params: {
+            'api_key' : 'ae4586143be06066dd74693192e929fc',
+            'page' : 1
+          }
+        })
+        .then(data => {
+            this.popularTvSeriesArray = data.data.results;
+            console.log(this.popularTvSeriesArray);
+        })
+        .catch(() => console.log('error'));
+
       },
 
       methods: {
 
-        searchMovie: function() {
+        searchMovies: function() {
+
           axios.get('https://api.themoviedb.org/3/search/movie', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -53,12 +82,14 @@ function createVueInstance() {
             }
           })
           .then(data => {
-              this.movieArray = data.data.results;
+              this.moviesArray = data.data.results;
           })
           .catch(() => console.log('error'));
+
         },
 
         searchTvSeries: function() {
+
           axios.get('https://api.themoviedb.org/3/search/tv', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -70,15 +101,17 @@ function createVueInstance() {
               console.log('array serie tv', this.tvSeriesArray);
           })
           .catch(() => console.log('error'));
+
         },
 
+        converteTenToFive: function(vote) {
 
-        vote1To5: function(vote) {
          return vote = Math.round(vote / 2);
+
         },
 
+        displayMoviesActors: function(idMovie) {
 
-        displayActors: function(idMovie) {
           axios.get('https://api.themoviedb.org/3/movie/' + idMovie, {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -86,19 +119,41 @@ function createVueInstance() {
             }
           })
           .then(data => {
-            this.actors.actorsArray = data.data.credits.cast;
-            this.actors.actorsArray.splice(4, this.actors.actorsArray.length);
-            this.actors.movieId = idMovie;
-            console.log('array attori', this.actorsArray);
+            this.moviesActors.moviesActorsArray = data.data.credits.cast;
+            this.moviesActors.moviesActorsArray.splice(4, this.moviesActors.moviesActorsArray.length);
+            this.moviesActors.movieId = idMovie;
+            console.log('array filmAttori', this.moviesActors.moviesActorsArray);
           })
           .catch(() => console.log('error'));
-        }
+
+        },
+
+
+        displaySeriesActors: function(idSerie) {
+
+          axios.get('https://api.themoviedb.org/3/tv/' + idSerie, {
+            params: {
+              'api_key' : 'ae4586143be06066dd74693192e929fc',
+              'append_to_response' : 'credits'
+            }
+          })
+          .then(data => {
+            this.seriesActors.seriesActorsArray = data.data.credits.cast;
+            this.seriesActors.seriesActorsArray.splice(4, this.seriesActors.seriesActorsArray.length);
+            this.seriesActors.serieId = idSerie;
+            console.log('array serieAttori', this.seriesActors.seriesActorsArray);
+          })
+          .catch(() => console.log('error'));
+          
+        },
+
       }
   });
 }
 
-function finalCountdown() {
+
+function boolflix() {
   createVueInstance();
 }
 
-document.addEventListener('DOMContentLoaded', finalCountdown);
+document.addEventListener('DOMContentLoaded', boolflix);

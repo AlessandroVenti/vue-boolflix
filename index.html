@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com"> 
         <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.gstatic.com"> 
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@700&display=swap" rel="stylesheet">
         <!-- vue -->
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
         <!-- axios -->
@@ -25,17 +25,67 @@
             <header class="flex">
                 <h1>Boolflix</h1>
                 <div>
-                    <input v-model="searchInput" type="text" placeholder="Ricerca film">
-                    <button @click = "searchMovie(), searchTvSeries()" > Cerca</button>
+                    <input v-model="searchInput" type="text" placeholder="Type a movie . . .">
+                    <button @click = "searchMovies(), searchTvSeries()" > Search</button>
                 </div>
             </header>
 
             <main class="flex">
 
-                <h1 v-if="movieArray.length > 0"> Movies: </h1>
-                <section class="movie-section">
-                    <ul v-if="movieArray.length > 0" class="flex">
-                        <li v-for="movie in movieArray">
+                <h1 v-if="moviesArray.length == 0 && tvSeriesArray.length == 0"> Popular Movies : </h1>
+                <section v-if="moviesArray.length == 0 && tvSeriesArray.length == 0">
+                    <ul class="flex">
+                        <li v-for="popularMovie in popularMoviesArray">
+                            <img class="no-image-found" v-if="popularMovie.poster_path == null" src="img/thumb.jpeg" alt="">
+                            <img v-else :src="imgInput + popularMovie.poster_path" alt="">
+                            <div class="description-menu">
+                                <h2><span>Title : </span>{{popularMovie.title}}</h2>
+                                <h3 v-if="popularMovie.original_title !== popularMovie.title"><span>Original Title :</span> {{popularMovie.original_title}}</h3>
+                                <img class="language-badge" v-if="popularMovie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                                <img class="language-badge" v-else-if="popularMovie.original_language == 'it'" src="img/italia.jpg" alt="">
+                                <h4 v-else><span>Language : </span>{{popularMovie.original_language}} </h4>
+                                <span>Vote: </span>
+                                <i v-for ="(star, starIndex) in 5" :class=" converteTenToFive(popularMovie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <h5 v-if="popularMovie.overview.length > 0"><span>Overview : </span>{{popularMovie.overview}}</h5>
+                                <h5 v-else>No overview at the moment.</h5>
+                                <button @click = "displayMoviesActors(popularMovie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="moviesActors.movieId == popularMovie.id">
+                                    <li v-for = "movieActor in moviesActors.moviesActorsArray"> {{movieActor.name}}</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <h1 v-if="moviesArray.length == 0 && tvSeriesArray.length == 0"> Popular TV-Series : </h1>
+                <section v-if="moviesArray.length == 0 && tvSeriesArray.length == 0">
+                    <ul class="flex">
+                        <li v-for="popularSerie in popularTvSeriesArray">
+                            <img class="no-image-found" v-if="popularSerie.poster_path == null" src="img/thumb.jpeg" alt="">
+                            <img v-else :src="imgInput + popularSerie.poster_path" alt="">
+                            <div class="description-menu">
+                                <h2><span>Title: </span>{{popularSerie.title}}</h2>
+                                <h3 v-if="popularSerie.original_title !== popularSerie.title"><span>Original Title:</span> {{popularSerie.original_title}}</h3>
+                                <img class="language-badge" v-if="popularSerie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                                <img class="language-badge" v-else-if="popularSerie.original_language == 'it'" src="img/italia.jpg" alt="">
+                                <h4 v-else><span>Language: </span>{{popularSerie.original_language}} </h4>
+                                <span>Vote: </span>
+                                <i v-for ="(star, starIndex) in 5" :class=" converteTenToFive(popularSerie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <h5 v-if="popularSerie.overview.length > 0"><span>Overview: </span>{{popularSerie.overview}}</h5>
+                                <h5 v-else>No overview at the moment.</h5>
+                                <button @click = "displaySeriesActors(popularSerie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="seriesActors.serieId == popularSerie.id">
+                                    <li v-for = "serieActor in seriesActors.seriesActorsArray"> {{serieActor.name}}</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <h1 v-if="moviesArray.length > 0"> Movies : </h1>
+                <section>
+                    <ul v-if="moviesArray.length > 0" class="flex">
+                        <li v-for="movie in moviesArray">
                             <img class="no-image-found" v-if="movie.poster_path == null" src="img/thumb.jpeg" alt="">
                             <img v-else :src="imgInput + movie.poster_path" alt="">
                             <div class="description-menu">
@@ -45,20 +95,20 @@
                                 <img class="language-badge" v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
                                 <h4 v-else><span>Language: </span>{{movie.original_language}} </h4>
                                 <span>Vote: </span>
-                                <i v-for ="(star, starIndex) in 5" :class=" vote1To5(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i v-for ="(star, starIndex) in 5" :class=" converteTenToFive(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 <h5 v-if="movie.overview.length > 0"><span>Overview: </span>{{movie.overview}}</h5>
                                 <h5 v-else>No overview at the moment.</h5>
-                                <button @click = "displayActors(movie.id)"> Actors </button>
-                                <ul class="actorsBox" v-if="actors.movieId == movie.id">
-                                    <li v-for = "(actor,actorIndex) in actors.actorsArray"> {{actor.name}}</li>
+                                <button @click = "displayMoviesActors(movie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="moviesActors.movieId == movie.id">
+                                    <li v-for = "movieActor in moviesActors.moviesActorsArray"> {{movieActor.name}}</li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </section>
 
-                <h1 v-if="tvSeriesArray.length > 0"> TV-Series: </h1>
-                <section class="tv-series-section">
+                <h1 v-if="tvSeriesArray.length > 0"> TV-Series : </h1>
+                <section>
                     <ul v-if="tvSeriesArray.length > 0" class="flex">
                         <li v-for="serie in tvSeriesArray">
                             <img class="no-image-found" v-if="serie.poster_path == null" src="img/thumb.jpeg" alt="">
@@ -70,12 +120,12 @@
                                 <img class="language-badge" v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
                                 <h4 v-else><span>Language: </span> {{serie.original_language}} </h4>
                                 <span>Vote:</span>
-                                <i v-for ="(star, starIndex) in 5" :class=" vote1To5(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i v-for ="(star, starIndex) in 5" :class=" converteTenToFive(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 <h5 v-if="serie.overview.length > 0"><span>Overview: </span> {{serie.overview}}</h5>
                                 <h5 v-else>No overview at the moment.</h5>
-                                <button @click = "displayActors(serie.id)"> Actors </button>
-                                <ul class="actorsBox" v-if="actors.movieId == serie.id">
-                                    <li v-for = "(actor,actorIndex) in actors.actorsArray"> {{actor.name}}</li>
+                                <button @click = "displaySeriesActors(serie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="seriesActors.serieId == serie.id">
+                                    <li v-for = "serieActor in seriesActors.seriesActorsArray"> {{serieActor.name}}</li>
                                 </ul>
                             </div>
                         </li>

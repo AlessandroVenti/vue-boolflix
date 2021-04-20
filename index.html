@@ -5,57 +5,76 @@
         <title>Boolflix</title>
         <!-- font awesame -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
-        <!-- bootstrap v4 -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <!-- font -->
+        <link rel="preconnect" href="https://fonts.gstatic.com"> 
+        <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com"> 
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
         <!-- vue -->
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
         <!-- axios -->
         <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-        <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- css -->
         <link rel="stylesheet" href="css/style.css">
+        <!-- js -->
         <script src="js/script.js"></script>
     </head>
     <body> 
         <div id="jsBoolflix">
 
-            <div>
-                <input v-model="searchInput" type="text" placeholder="Ricerca film">
-                <button @click = "searchMovie(), searchTvSeries()" > Cerca</button>
-            </div>
-            <h1 v-if="movieArray.length > 0"> Film: </h1>
-            <ul>
-                <li v-for="movie in movieArray">
-                    <img :src="imgInput + movie.poster_path" alt="">
-                    <h2>{{movie.title}}</h2>
-                    <h3>{{movie.original_title}}</h3>
-                    <img class="language-badge" v-if="movie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
-                    <img class="language-badge" v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
-                    <h4 v-else> {{movie.original_language}} </h4>
-                    <h5 v-html = "vote1To5(movie.vote_average)"></h5>
-                    <div>
-                        <i v-for ="(star, starIndex) in 5" :class=" vote1To5(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
-                    </div>
-                    
-                </li>
-            </ul>
-            <h1 v-if="tvSeriesArray.length > 0"> Serie-tv: </h1>
-            <ul>
-                <li v-for="serie in tvSeriesArray">
-                    <img :src="imgInput + serie.poster_path" alt="">
-                    <h2>{{serie.name}}</h2>
-                    <h3>{{serie.original_name}}</h3>
-                    <img class="language-badge" v-if="serie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
-                    <img class="language-badge" v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
-                    <h4 v-else> {{serie.original_language}} </h4>
-                    <h5 v-html = "vote1To5(serie.vote_average)"></h5>
-                    <div>
-                        <i v-for ="(star, starIndex) in 5" :class=" vote1To5(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
-                    </div>
-                </li>
-            </ul>
+            <header class="flex">
+                <h1>Boolflix</h1>
+                <div>
+                    <input v-model="searchInput" type="text" placeholder="Ricerca film">
+                    <button @click = "searchMovie(), searchTvSeries()" > Cerca</button>
+                </div>
+            </header>
+
+            <main class="flex">
+
+                <h1 v-if="movieArray.length > 0"> Movies: </h1>
+                <section class="movie-section">
+                    <ul v-if="movieArray.length > 0" class="flex">
+                        <li v-for="movie in movieArray">
+                            <img class="no-image-found" v-if="movie.poster_path == null" src="img/thumb.jpeg" alt="">
+                            <img v-else :src="imgInput + movie.poster_path" alt="">
+                            <div class="description-menu">
+                                <h2><span>Title: </span>{{movie.title}}</h2>
+                                <h3 v-if="movie.original_title !== movie.title"><span>Original Title:</span> {{movie.original_title}}</h3>
+                                <img class="language-badge" v-if="movie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                                <img class="language-badge" v-else-if="movie.original_language == 'it'" src="img/italia.jpg" alt="">
+                                <h4 v-else><span>Language: </span>{{movie.original_language}} </h4>
+                                <span>Vote: </span>
+                                <i v-for ="(star, starIndex) in 5" :class=" vote1To5(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <h5 v-if="movie.overview.length > 0"><span>Overview: </span>{{movie.overview}}</h5>
+                                <h5 v-else>No overview at the moment.</h5>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <h1 v-if="tvSeriesArray.length > 0"> TV-Series: </h1>
+                <section class="tv-series-section">
+                    <ul v-if="tvSeriesArray.length > 0" class="flex">
+                        <li v-for="serie in tvSeriesArray">
+                            <img class="no-image-found" v-if="serie.poster_path == null" src="img/thumb.jpeg" alt="">
+                            <img v-else :src="imgInput + serie.poster_path" alt="">
+                            <div class="description-menu">
+                                <h2><span>Title: </span> {{serie.name}}</h2>
+                                <h3 v-if="serie.original_name !== serie.name"><span>Original Title: </span> {{serie.original_name}}</h3>
+                                <img class="language-badge" v-if="serie.original_language == 'en'" src="img/inghilterra.jpg" alt="">
+                                <img class="language-badge" v-else-if="serie.original_language == 'it'" src="img/italia.jpg" alt="">
+                                <h4 v-else><span>Language: </span> {{serie.original_language}} </h4>
+                                <span>Vote:</span>
+                                <i v-for ="(star, starIndex) in 5" :class=" vote1To5(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                <h5 v-if="serie.overview.length > 0"><span>Overview: </span> {{serie.overview}}</h5>
+                                <h5 v-else>No overview at the moment.</h5>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+            </main>
         </div>
     </body>
 </html>

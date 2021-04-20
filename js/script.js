@@ -28,21 +28,14 @@
 
 function createVueInstance() {
   new Vue({
+
       el: '#jsBoolflix',
 
       data: {
           movieArray : [],
           tvSeriesArray : [],
           searchInput : ``,
-          imgInput: `https://image.tmdb.org/t/p/w92`
-      },
-
-      mounted() {
-        
-      },
-
-      computed: {
-        
+          imgInput: `https://image.tmdb.org/t/p/w342`
       },
 
       methods: {
@@ -56,11 +49,10 @@ function createVueInstance() {
           })
           .then(data => {
               this.movieArray = data.data.results;
-              console.log(this.movieArray);
           })
           .catch(() => console.log('error'));
         },
-        
+
 
         searchTvSeries: function() {
           axios.get('https://api.themoviedb.org/3/search/tv', {
@@ -71,7 +63,7 @@ function createVueInstance() {
           })
           .then(data => {
               this.tvSeriesArray = data.data.results;
-            console.log(this.tvSeriesArray);
+              console.log(this.tvSeriesArray);
           })
           .catch(() => console.log('error'));
         },

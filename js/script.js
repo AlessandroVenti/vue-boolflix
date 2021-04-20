@@ -35,16 +35,17 @@ function createVueInstance() {
           movieArray : [],
           tvSeriesArray : [],
           actorsArray : [], 
-          nameActorsArray : [],
           searchInput : ``,
-          actorsButton: false,
+          actors: {
+            movieId: 0,
+            actorsArray: []
+          },
           imgInput: `https://image.tmdb.org/t/p/w342`
       },
 
       methods: {
 
         searchMovie: function() {
-          this.actorsButton = false;
           axios.get('https://api.themoviedb.org/3/search/movie', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -53,14 +54,11 @@ function createVueInstance() {
           })
           .then(data => {
               this.movieArray = data.data.results;
-              console.log('array film', this.movieArray);
           })
           .catch(() => console.log('error'));
         },
 
-
         searchTvSeries: function() {
-          this.actorsButton = false;
           axios.get('https://api.themoviedb.org/3/search/tv', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -79,8 +77,8 @@ function createVueInstance() {
          return vote = Math.round(vote / 2);
         },
 
-        lollipop: function(idMovie) {
-          this.actorsButton = true;
+
+        displayActors: function(idMovie) {
           axios.get('https://api.themoviedb.org/3/movie/' + idMovie, {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -88,9 +86,10 @@ function createVueInstance() {
             }
           })
           .then(data => {
-            this.actorsArray = data.data.credits.cast;
+            this.actors.actorsArray = data.data.credits.cast;
+            this.actors.actorsArray.splice(4, this.actors.actorsArray.length);
+            this.actors.movieId = idMovie;
             console.log('array attori', this.actorsArray);
-            // return this.nameActorsArray;
           })
           .catch(() => console.log('error'));
         }

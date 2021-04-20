@@ -48,9 +48,9 @@
                                 <i v-for ="(star, starIndex) in 5" :class=" vote1To5(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 <h5 v-if="movie.overview.length > 0"><span>Overview: </span>{{movie.overview}}</h5>
                                 <h5 v-else>No overview at the moment.</h5>
-                                <button @click = "lollipop(movie.id)"> Actors </button>
-                                <ul v-if="(actorsButton)">
-                                    <li v-for = "(actor,actorIndex) in actorsArray" v-if="4 >= actorIndex"> {{actor.name}}</li>
+                                <button @click = "displayActors(movie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="actors.movieId == movie.id">
+                                    <li v-for = "(actor,actorIndex) in actors.actorsArray"> {{actor.name}}</li>
                                 </ul>
                             </div>
                         </li>
@@ -73,6 +73,10 @@
                                 <i v-for ="(star, starIndex) in 5" :class=" vote1To5(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 <h5 v-if="serie.overview.length > 0"><span>Overview: </span> {{serie.overview}}</h5>
                                 <h5 v-else>No overview at the moment.</h5>
+                                <button @click = "displayActors(serie.id)"> Actors </button>
+                                <ul class="actorsBox" v-if="actors.movieId == serie.id">
+                                    <li v-for = "(actor,actorIndex) in actors.actorsArray"> {{actor.name}}</li>
+                                </ul>
                             </div>
                         </li>
                     </ul>

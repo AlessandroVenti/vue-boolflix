@@ -110,9 +110,21 @@ li:hover .description-menu {
   display: block;
 }
 
+.actorsBox{
+  margin-top: 10px;
+  list-style-type: none;
+}
+
+.actorsBox li {
+  font-family: 'Roboto', sans-serif;
+  padding: 3px;
+  border-bottom: 1px solid red;
+  width: 50%;
+}
+
 h2, h3, h4, h5, span {
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
   color: white;
   margin: 10px 0;
@@ -131,4 +143,5 @@ h2, h3, h4, h5, span {
   width: 30px;
   height: auto;
 }
+
 

@@ -34,13 +34,17 @@ function createVueInstance() {
       data: {
           movieArray : [],
           tvSeriesArray : [],
+          actorsArray : [], 
+          nameActorsArray : [],
           searchInput : ``,
+          actorsButton: false,
           imgInput: `https://image.tmdb.org/t/p/w342`
       },
 
       methods: {
 
         searchMovie: function() {
+          this.actorsButton = false;
           axios.get('https://api.themoviedb.org/3/search/movie', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -49,12 +53,14 @@ function createVueInstance() {
           })
           .then(data => {
               this.movieArray = data.data.results;
+              console.log('array film', this.movieArray);
           })
           .catch(() => console.log('error'));
         },
 
 
         searchTvSeries: function() {
+          this.actorsButton = false;
           axios.get('https://api.themoviedb.org/3/search/tv', {
             params: {
               'api_key' : 'ae4586143be06066dd74693192e929fc',
@@ -63,7 +69,7 @@ function createVueInstance() {
           })
           .then(data => {
               this.tvSeriesArray = data.data.results;
-              console.log(this.tvSeriesArray);
+              console.log('array serie tv', this.tvSeriesArray);
           })
           .catch(() => console.log('error'));
         },
@@ -71,8 +77,23 @@ function createVueInstance() {
 
         vote1To5: function(vote) {
          return vote = Math.round(vote / 2);
-        }
+        },
 
+        lollipop: function(idMovie) {
+          this.actorsButton = true;
+          axios.get('https://api.themoviedb.org/3/movie/' + idMovie, {
+            params: {
+              'api_key' : 'ae4586143be06066dd74693192e929fc',
+              'append_to_response' : 'credits'
+            }
+          })
+          .then(data => {
+            this.actorsArray = data.data.credits.cast;
+            console.log('array attori', this.actorsArray);
+            // return this.nameActorsArray;
+          })
+          .catch(() => console.log('error'));
+        }
       }
   });
 }

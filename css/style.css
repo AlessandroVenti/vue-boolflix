@@ -44,8 +44,8 @@ header input {
   color: red;
 }
 
-header button {
-  background-color: black;
+button {
+  background-color:#141414;
   border: 3px solid red;
   border-radius: 5px;
   color: white;
@@ -65,17 +65,16 @@ main h1 {
   color: red;
 }
 
-ul {
+section > ul {
   margin-top: 20px;
   list-style-type: none;
   overflow: auto;
   justify-content: flex-start;
 }
 
-ul li {
+section > ul > li {
   border: 3px solid red;
   margin: 0 10px;
-  /* padding: 10px; */
   border-radius: 5px;
   position: relative;
 }
@@ -86,6 +85,7 @@ ul li {
 }
 
 ul li img {
+  width: 342px;
   height: 513px;
 }
 
